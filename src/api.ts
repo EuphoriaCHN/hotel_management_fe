@@ -79,6 +79,7 @@ const createApi = (_: CreateApi) => <T = any>(data: Array<any> | any): Promise<T
 export const LOGIN = createApi({ url: '/user/login/in', method: 'post' });
 export const LOGOUT = createApi({ url: '/user/login/out', method: 'post' });
 
+export const MODIFY_NORMAL_PASSWORD = createApi({ url: '/user/normal/modify', method: 'post' });
 export const MODIFY_ADMIN_PASSWORD = createApi({ url: '/user/admin/modify', method: 'post' });
 
 export const ADMIN_CREATE_NORMAL = createApi({ url: '/user/admin/add', method: 'post' });
