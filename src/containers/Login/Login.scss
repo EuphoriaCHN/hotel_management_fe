@@ -1,0 +1,42 @@
+$formBoxBackgroundColor: rgba(255, 255, 255, .55);
+$formBoxBackdropFilter: saturate(180%) blur(20px);
+
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  overflow: hidden;
+
+  &-form-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    height: 100%;
+    width: 30%;
+    min-width: 600px;
+    top: 0;
+    left: 0;
+
+    background-color: $formBoxBackgroundColor;
+    backdrop-filter: $formBoxBackdropFilter;
+    -webkit-backdrop-filter: $formBoxBackdropFilter;
+    z-index: 2;
+
+    h1 {
+      margin-bottom: 48px !important;
+    }
+
+    .login-form {
+      width: 50%;
+
+      .more-operation {
+        text-align: right;
+      }
+    }
+  }
+}

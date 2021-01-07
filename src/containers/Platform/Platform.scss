@@ -1,0 +1,105 @@
+$primary: #1890ff;
+$primaryHover: #40a9ff;
+$primaryActive: #096dd9;
+
+$dangerous: #ff4d4f;
+$dangerousHover: #ff7875;
+$dangerousActive: #d9363e;
+
+@mixin useTransition {
+  transition: all .3s cubic-bezier(.645, .045, .355, 1);
+}
+
+@mixin setCoverBackgroundColor($checkIn, $checkOut) {
+  .check-in-card-cover {
+    background-color: $checkIn;
+  }
+
+  .check-out-card-cover {
+    background-color: $checkOut;
+  }
+}
+
+.platform {
+  &-card-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-card {
+    user-select: none;
+    margin-right: 96px !important;
+    width: 220px;
+
+    .ant-card-body {
+      height: 100px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .check-in-card-cover,
+    .check-out-card-cover {
+      @include useTransition();
+      height: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @include setCoverBackgroundColor($primary, $dangerous);
+
+    &:last-child {
+      margin: 0;
+    }
+
+    &:hover {
+      @include setCoverBackgroundColor($primaryHover, $dangerousHover);
+    }
+
+    &:active {
+      @include setCoverBackgroundColor($primaryActive, $dangerousActive);
+    }
+  }
+}
+
+.platform-card-cover {
+  color: #fff;
+  text-align: center;
+  font-size: 56px;
+}
+
+.platform-tab {
+  width: 100%;
+  min-height: 100%;
+}
+
+.check-in-user-info-form {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  margin-bottom: 24px;
+  padding: 24px;
+
+  &-remove {
+    color: $dangerous !important;
+    position: absolute;
+    top: 0;
+    right: -16px - 8px;
+    font-size: 16px;
+    z-index: 2;
+
+    &:hover {
+      color: $dangerousHover !important;
+    }
+
+    &:active {
+      color: $dangerousActive !important;
+    }
+  }
+}

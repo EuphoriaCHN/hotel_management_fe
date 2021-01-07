@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+            "@components/*": [
+                "./src/components/*"
+            ],
+            "@containers/*": [
+                "./src/containers/*"
+            ],
+            "@common/*": [
+                "./src/common/*"
+            ],
+            "@store/*": [
+                "./src/store/*"
+            ],
+            "@api": [
+                "./src/api.ts"
+            ],
+            "@i18n": [
+                "./src/i18n.ts"
+            ]
+        }
+    }
+}
