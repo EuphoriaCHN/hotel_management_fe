@@ -46,11 +46,11 @@ function Header(props: IProps) {
         history.replace('/login');
         return;
       }
-      // CHECK_SESSION({
-      //   data: {
-      //     token: sessionState
-      //   }
-      // });
+      CHECK_SESSION({
+        data: {
+          token: sessionState
+        }
+      });
     }
   }, []);
 

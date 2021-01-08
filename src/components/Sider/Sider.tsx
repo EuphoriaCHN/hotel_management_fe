@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import * as H from 'history';
+import { useSelector } from 'react-redux';
+import { USER_TYPE } from '@common/constants';
 
 import { Layout, Menu, Tooltip } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
@@ -22,7 +24,7 @@ type SIDER_DATA = {
   icon: React.ReactElement;
   value?: string;
   title?: string;
-  auth?: Array<number>;
+  auth?: keyof typeof USER_TYPE;
   children?: Array<SIDER_DATA>;
 };
 
@@ -33,6 +35,7 @@ function Sider(props: {}) {
   const _history: H.History<H.LocationState> = useHistory();
   const _location = useLocation();
 
+  const user: any = useSelector((state: any) => state.user);
   const { t, i18n } = useTranslation();
 
   const getTitle: null | React.ReactNode = collapsed ? (
@@ -51,15 +54,20 @@ function Sider(props: {}) {
   const siderData = React.useMemo<Array<SIDER_DATA>>(() => ([
     { k: 'platform', icon: <SendOutlined />, value: t('入住 & 离店') },
     { k: 'roomReservation', icon: <CarryOutOutlined />, value: t('客房预订') },
-    { k: 'search', icon: <SearchOutlined />, value: t('信息查询') },
-    { k: 'roomInfoManagement', icon: <HomeOutlined />, value: t('客房管理') },
-    { k: 'userInfoManagement', icon: <UsergroupAddOutlined />, value: t('用户管理') },
+    { k: 'search', icon: <SearchOutlined />, value: t('信息查询'), auth: 'admin' },
+    { k: 'roomInfoManagement', icon: <HomeOutlined />, value: t('客房管理'), auth: 'admin' },
+    { k: 'userInfoManagement', icon: <UsergroupAddOutlined />, value: t('用户管理'), auth: 'admin' },
     { k: 'dashboard', icon: <UserOutlined />, value: t('个人中心') },
     { k: 'about', icon: <QuestionCircleOutlined />, value: t('关于') },
   ]), []);
 
   const getSiderItem = React.useCallback((item: SIDER_DATA) => {
-    // todo:: Authorization
+    if (item.auth && item.auth.length) {
+      const isAdmin = user.type === 'admin';
+      if (item.auth === 'admin' && !isAdmin) {
+        return null;
+      }
+    }
     if (item.k && item.k.length) {
       return (
         <Menu.Item key={item.k} icon={item.icon} onClick={handleChangeRoute}>
@@ -72,7 +80,7 @@ function Sider(props: {}) {
         {item.children.map(getSiderItem)}
       </Menu.SubMenu>
     );
-  }, []);
+  }, [user]);
 
   React.useEffect(() => {
     if (_location.pathname === '/') {
@@ -83,26 +91,23 @@ function Sider(props: {}) {
     }
   }, [_location.pathname]);
 
-  const render: JSX.Element = React.useMemo(
-    () => (
-      <Layout.Sider
-        className={'sider'}
-        collapsed={collapsed}
-        onCollapse={setCollapsed}
-        collapsible
+  const render: JSX.Element = (
+    <Layout.Sider
+      className={'sider'}
+      collapsed={collapsed}
+      onCollapse={setCollapsed}
+      collapsible
+    >
+      {getTitle}
+      <Menu
+        theme={'dark'}
+        selectedKeys={[menuKey]}
+        onSelect={({ selectedKeys }) => setMenuKey(selectedKeys[0] as string)}
+        mode={'inline'}
       >
-        {getTitle}
-        <Menu
-          theme={'dark'}
-          selectedKeys={[menuKey]}
-          onSelect={({ selectedKeys }) => setMenuKey(selectedKeys[0] as string)}
-          mode={'inline'}
-        >
-          {siderData.map(getSiderItem)}
-        </Menu>
-      </Layout.Sider>
-    ),
-    [collapsed, i18n.language, menuKey]
+        {siderData.map(getSiderItem)}
+      </Menu>
+    </Layout.Sider>
   );
 
   return render;
