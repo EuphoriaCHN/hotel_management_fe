@@ -7,12 +7,14 @@ import DashBoard from '@containers/DashBoard/DashBoard';
 import About from '@containers/About/About';
 import Users from '@containers/Users/Users';
 import RoomManagement from '@containers/RoomManagement/RoomManagement';
+import Reservation from '@containers/Reservation/Reservation';
 
 import NotFound from '@containers/NotFound/NotFound';
 
 const Router: React.FC<{}> = () => {
   return (
     <Switch>
+      <Route path={'/roomReservation'} component={Reservation} />
       <Route path={'/roomInfoManagement'} component={RoomManagement} />
       <Route path={'/dashboard'} component={DashBoard} />
       <Route path={'/userInfoManagement'} component={Users} />

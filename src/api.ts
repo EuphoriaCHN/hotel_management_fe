@@ -78,6 +78,7 @@ const createApi = (_: CreateApi) => <T = any>(data: Array<any> | any): Promise<T
 
 export const LOGIN = createApi({ url: '/user/login/in', method: 'post' });
 export const LOGOUT = createApi({ url: '/user/login/out', method: 'post' });
+export const CHECK_SESSION = createApi({ url: '/user/login/getInfo', method: 'post' });
 
 export const MODIFY_NORMAL_PASSWORD = createApi({ url: '/user/normal/modify', method: 'post' });
 export const MODIFY_ADMIN_PASSWORD = createApi({ url: '/user/admin/modify', method: 'post' });
@@ -88,3 +89,10 @@ export const ADMIN_DELETE_NORMAL = createApi({ url: '/user/admin/delete', method
 
 export const QUERY_ALL_USER = createApi({ url: '/user/get/all', isPathApi: true });
 export const ADMIN_QUERY_SOME_USER = createApi({ url: '/user/get/some', isPathApi: true });
+
+export const QUERY_ALL_ROOM_TYPE = createApi({ url: '/room/detail/all/get', isPathApi: true });
+
+export const QUERY_ALL_ROOM = createApi({ url: '/room/all/get', isPathApi: true });
+
+export const ADD_ROOM_TYPE = createApi({ url: '/room/detail/add', method: 'post' });
+export const DELETE_ROOM_TYPE = createApi({ url: '/room/detail/delete', method: 'post' });

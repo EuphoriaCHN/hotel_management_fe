@@ -1,6 +1,8 @@
 // 常量池
 import I18n from '../../i18n';
 
+const echarts = require('echarts');
+
 // 证件类型
 export const IdentityType = {
   ID: I18n.t('身份证'),
@@ -12,6 +14,14 @@ export const USER_TYPE = {
   normal: I18n.t('普通用户'),
   admin: I18n.t('管理员')
 }
+
+export const ROOM_TYPE = {
+  KING_SIZE: I18n.t('大床房'),
+  SINGLE: I18n.t('单人房'),
+  TWIN: I18n.t('双床房'),
+  SUPERIOR_FAMILY: I18n.t('高级家庭房'),
+  SUITE: I18n.t('套房')
+} as const;
 
 // 正则匹配
 export const REGEXP = {
@@ -52,4 +62,105 @@ export const STATUS_TEXT = {
   NO_SUCH_KEY: I18n.t('不存在此 Key'),
   KEY_EXIST: I18n.t('Key 已存在'),
   INNER_ERROR: I18n.t('糟糕...服务器打瞌睡了...'),
+};
+
+
+// MOCK DATA
+const roomManagementRoomCountMockData = {
+  KING_SIZE: 48,
+  SINGLE: 56,
+  TWIN: 21,
+  SUPERIOR_FAMILY: 30,
+  SUITE: 15
+};
+
+export const RoomManagementRoomCountMock = {
+  data: roomManagementRoomCountMockData,
+
+  echartsOptions: {
+    roomManagementRoomCountWithType: (types: Array<keyof typeof ROOM_TYPE> = []): any => {
+      const data = types.map(type => roomManagementRoomCountMockData[type]);
+      const dataValueMax = Math.max(...data) + 10;
+      const dataShadow = new Array(types.length).fill(dataValueMax);
+
+      return {
+        title: {
+          text: I18n.t('客房数量分布图'),
+          // subtext: I18n.t('点击柱状图或缩放可交互')
+        },
+        xAxis: {
+          data: types.map(type => ROOM_TYPE[type]),
+          axisLabel: {
+            // inside: true,
+            // textStyle: {
+            //     color: '#fff'
+            // }
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          },
+          z: 10
+        },
+        yAxis: {
+          axisLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            textStyle: {
+              color: '#999'
+            }
+          }
+        },
+        dataZoom: [
+          {
+            type: 'inside'
+          }
+        ],
+        series: [
+          { // For shadow
+            type: 'bar',
+            itemStyle: {
+              color: 'rgba(0,0,0,0.05)'
+            },
+            barGap: '-100%',
+            barCategoryGap: '40%',
+            data: dataShadow,
+            animation: false
+          },
+          {
+            type: 'bar',
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1,
+                [
+                  { offset: 0, color: '#83bff6' },
+                  { offset: 0.5, color: '#188df0' },
+                  { offset: 1, color: '#188df0' }
+                ]
+              )
+            },
+            emphasis: {
+              itemStyle: {
+                color: new echarts.graphic.LinearGradient(
+                  0, 0, 0, 1,
+                  [
+                    { offset: 0, color: '#2378f7' },
+                    { offset: 0.7, color: '#2378f7' },
+                    { offset: 1, color: '#83bff6' }
+                  ]
+                )
+              }
+            },
+            data
+          }
+        ]
+      };
+    }
+  }
 };

@@ -46,23 +46,17 @@ function DashBoard(props: IProps) {
     }
 
     try {
-      // todo:: 修改普通用户
+      const requestData = {
+        data: {
+          user: user.account,
+          name: user.account,
+          password: newPassword
+        }
+      };
       if (user.type === 'normal') {
-        await MODIFY_NORMAL_PASSWORD({
-          data: {
-            user: user.account,
-            name: user.account,
-            password: newPassword
-          }
-        });
+        await MODIFY_NORMAL_PASSWORD(requestData);
       } else {
-        await MODIFY_ADMIN_PASSWORD({
-          data: {
-            user: user.account,
-            name: user.account,
-            password: newPassword
-          }
-        });
+        await MODIFY_ADMIN_PASSWORD(requestData);
       }
       // 修改密码成功，清除用户数据，重新登录
       dispatch(setAuthKey({

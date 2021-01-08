@@ -8,7 +8,7 @@ import { useHistory } from 'react-router';
 
 import { LOCALE } from '@common/constants/locale';
 
-import { LOGOUT } from '@api';
+import { LOGOUT, CHECK_SESSION } from '@api';
 import { setAuthKey } from '@store/project';
 
 import { Dropdown, Button, Menu, message } from 'antd';
@@ -28,11 +28,6 @@ function Header(props: IProps) {
   const project: any = useSelector<any>(state => state.project);
   const user: any = useSelector<any>(state => state.user);
 
-  if (!project.authHeaderValue) {
-    // 未登录
-    history.replace('/login');
-  }
-
   const handleI18n = (param: MenuInfo): void => {
     const { key } = param;
 
@@ -41,6 +36,23 @@ function Header(props: IProps) {
       i18n.changeLanguage(key as string);
     }
   };
+
+  React.useEffect(() => {
+    // store 里没存
+    if (!project.authHeaderValue) {
+      const sessionState = window.sessionStorage.getItem('Authorization');
+      if (!sessionState) {
+        // 未登录
+        history.replace('/login');
+        return;
+      }
+      // CHECK_SESSION({
+      //   data: {
+      //     token: sessionState
+      //   }
+      // });
+    }
+  }, []);
 
   const menu: React.ReactElement = (
     <Menu>

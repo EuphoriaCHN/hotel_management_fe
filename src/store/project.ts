@@ -10,8 +10,16 @@ const projectSlice = createSlice({
   initialState: initializeData,
   reducers: {
     setAuthKey(state, action) {
-      state.authHeaderKey = action.payload.authHeaderKey;
-      state.authHeaderValue = action.payload.authHeaderValue;
+      const { authHeaderKey, authHeaderValue } = action.payload;
+
+      if (authHeaderValue && authHeaderValue.length) {
+        window.sessionStorage.setItem('Authorization', authHeaderValue);
+      } else {
+        window.sessionStorage.removeItem('Authorization');
+      }
+
+      state.authHeaderKey = authHeaderKey;
+      state.authHeaderValue = authHeaderValue;
     }
   }
 });
