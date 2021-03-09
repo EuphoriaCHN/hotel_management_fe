@@ -59,7 +59,7 @@ function Sider(props: {}) {
     { k: 'userInfoManagement', icon: <UsergroupAddOutlined />, value: t('用户管理'), auth: 'admin' },
     { k: 'dashboard', icon: <UserOutlined />, value: t('个人中心') },
     { k: 'about', icon: <QuestionCircleOutlined />, value: t('关于') },
-  ]), []);
+  ]), [i18n.language]);
 
   const getSiderItem = React.useCallback((item: SIDER_DATA) => {
     if (item.auth && item.auth.length) {

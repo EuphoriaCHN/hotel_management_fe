@@ -34,7 +34,7 @@ axios.interceptors.response.use(async response => {
   return Promise.reject(error);
 });
 
-const prefix = 'http://47.92.67.237:9001';
+const prefix = 'http://120.27.211.127:9001';
 
 type CreateApi = {
   url: string;
@@ -48,6 +48,7 @@ const createApi = (_: CreateApi) => <T = any>(data: Array<any> | any): Promise<T
   const requestBody: AxiosRequestConfig = {
     url: `${prefix}${url}`,
     method: method || 'get',
+    timeout: 10 * 1000
   };
   if (!isPathApi) {
     if (method && method.toLowerCase() === 'post') {
@@ -73,6 +74,8 @@ const createApi = (_: CreateApi) => <T = any>(data: Array<any> | any): Promise<T
       [projectStore.authHeaderKey]: projectStore.authHeaderValue
     };
   }
+
+  console.log(requestBody);
   return axios.request(requestBody);
 };
 
