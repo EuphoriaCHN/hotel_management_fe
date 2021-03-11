@@ -34,19 +34,20 @@ axios.interceptors.response.use(async response => {
   return Promise.reject(error);
 });
 
-const prefix = 'http://120.27.211.127:9001';
+const prefix = 'http://120.27.211.127';
 
 type CreateApi = {
   url: string;
   method?: Method;
   isPathApi?: boolean;
+  port: number;
 };
 
 const createApi = (_: CreateApi) => <T = any>(data: Array<any> | any): Promise<T> => {
   const { url, method, isPathApi } = _;
 
   const requestBody: AxiosRequestConfig = {
-    url: `${prefix}${url}`,
+    url: `${prefix}:${_.port}${url}`,
     method: method || 'get',
     timeout: 10 * 1000
   };
@@ -79,23 +80,23 @@ const createApi = (_: CreateApi) => <T = any>(data: Array<any> | any): Promise<T
   return axios.request(requestBody);
 };
 
-export const LOGIN = createApi({ url: '/user/login/in', method: 'post' });
-export const LOGOUT = createApi({ url: '/user/login/out', method: 'post' });
-export const CHECK_SESSION = createApi({ url: '/user/login/getInfo', method: 'post' });
+export const LOGIN = createApi({ url: '/user/login/in', method: 'post', port: 25001 });
+export const LOGOUT = createApi({ url: '/user/login/out', method: 'post', port: 25001 });
+export const CHECK_SESSION = createApi({ url: '/user/login/getInfo', method: 'post', port: 25001 });
 
-export const MODIFY_NORMAL_PASSWORD = createApi({ url: '/user/normal/modify', method: 'post' });
-export const MODIFY_ADMIN_PASSWORD = createApi({ url: '/user/admin/modify', method: 'post' });
+export const MODIFY_NORMAL_PASSWORD = createApi({ url: '/user/normal/modify', method: 'post', port: 25001 });
+export const MODIFY_ADMIN_PASSWORD = createApi({ url: '/user/admin/modify', method: 'post', port: 25001 });
 
-export const ADMIN_CREATE_NORMAL = createApi({ url: '/user/admin/add', method: 'post' });
-export const ADMIN_MODIFY_NORMAL = createApi({ url: '/user/admin/modify', method: 'post' });
-export const ADMIN_DELETE_NORMAL = createApi({ url: '/user/admin/delete', method: 'post' });
+export const ADMIN_CREATE_NORMAL = createApi({ url: '/user/admin/add', method: 'post', port: 25001 });
+export const ADMIN_MODIFY_NORMAL = createApi({ url: '/user/admin/modify', method: 'post', port: 25001 });
+export const ADMIN_DELETE_NORMAL = createApi({ url: '/user/admin/delete', method: 'post', port: 25001 });
 
-export const QUERY_ALL_USER = createApi({ url: '/user/get/all', isPathApi: true });
-export const ADMIN_QUERY_SOME_USER = createApi({ url: '/user/get/some', isPathApi: true });
+export const QUERY_ALL_USER = createApi({ url: '/user/get/all', isPathApi: true, port: 25001 });
+export const ADMIN_QUERY_SOME_USER = createApi({ url: '/user/get/some', isPathApi: true, port: 25001 });
 
-export const QUERY_ALL_ROOM_TYPE = createApi({ url: '/room/detail/all/get', isPathApi: true });
+export const QUERY_ALL_ROOM_TYPE = createApi({ url: '/room/detail/all/get', isPathApi: true, port: 25002 });
 
-export const QUERY_ALL_ROOM = createApi({ url: '/room/all/get', isPathApi: true });
+export const QUERY_ALL_ROOM = createApi({ url: '/room/all/get', isPathApi: true, port: 25002 });
 
-export const ADD_ROOM_TYPE = createApi({ url: '/room/detail/add', method: 'post' });
-export const DELETE_ROOM_TYPE = createApi({ url: '/room/detail/delete', method: 'post' });
+export const ADD_ROOM_TYPE = createApi({ url: '/room/detail/add', method: 'post', port: 25002 });
+export const DELETE_ROOM_TYPE = createApi({ url: '/room/detail/delete', method: 'post', port: 25002 });
